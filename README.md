@@ -1,6 +1,9 @@
 # ConsoleAppFramework.DryRun
 
-ConsoleAppFramework.DryRun is a library that allows developers to include a "dry run" mode in their applications that uses ConsoleAppFramework. It provides a unified interface for checking whether the application is running in dry run mode based on command line arguments and/or environment variables.
+ [![Releases](https://img.shields.io/github/release/wipiano/ConsoleAppFramework.DryRun.svg)](https://github.com/wipiano/ConsoleAppFramework.DryRun/releases)
+
+
+ConsoleAppFramework.DryRun is a library that allows developers to include a "dry run" mode in their applications that uses [ConsoleAppFramework](https://github.com/Cysharp/ConsoleAppFramework). It provides a unified interface for checking whether the application is running in dry run mode based on command line arguments and/or environment variables.
 
 ## Features
 
@@ -41,6 +44,8 @@ In this case, `MyService` is used when the dry run flag is `false`, and `MyDryRu
 
 
 ## Installation
+
+NuGet: [ConsoleAppFramework.DryRun](https://www.nuget.org/packages/ConsoleAppFramework.DryRun)
 
 You can install the library via NuGet package manager:
 
