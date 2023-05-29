@@ -1,0 +1,62 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" charset="utf-8" #>
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+
+namespace ConsoleAppFramework;
+
+<#
+    var lifetimes = new List<string> { "Transient", "Scoped", "Singleton" };
+#>
+
+/// <summary>
+/// Provides extension methods for <see cref="IServiceCollection"/> to register services with a dry run flag.
+/// </summary>
+public static class ServiceCollectionExtensions
+{
+	<# foreach (var lifetime in lifetimes) { #>
+	/// <summary>
+	/// Adds a <see cref="TInterface"/> service to the <see cref="IServiceCollection"/> with the specified service lifetime.
+	/// If the dry run flag is set to true, the <see cref="TDryRunImpl"/> implementation is used.
+	/// Otherwise, the <see cref="TImpl"/> implementation is used.
+	/// </summary>
+	/// <typeparam name="TInterface">The type of the service to add.</typeparam>
+	/// <typeparam name="TImpl">The type of the implementation to use when the dry run flag is false.</typeparam>
+	/// <typeparam name="TDryRunImpl">The type of the implementation to use when the dry run flag is true.</typeparam>
+	/// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
+	/// <returns>The same service collection so that multiple calls can be chained.</returns>
+	public static IServiceCollection Add<#= lifetime #>WithDryRunFlag<TInterface, TImpl, TDryRunImpl>(this IServiceCollection services) 
+		where TInterface : class
+		where TImpl : class, TInterface
+		where TDryRunImpl : class, TInterface
+	{
+		return services.Add<#= lifetime #><TImpl>()
+			.Add<#= lifetime #><TDryRunImpl>()
+			.Add<#= lifetime #><TInterface>(provider => provider.GetDryRunFlagsValue() ? provider.GetRequiredService<TDryRunImpl>() : provider.GetRequiredService<TImpl>());
+	}
+
+	/// <summary>
+	/// Tries to add a <see cref="TInterface"/> service to the <see cref="IServiceCollection"/> with the specified service lifetime.
+	/// If the dry run flag is set to true, the <see cref="TDryRunImpl"/> implementation is used.
+	/// Otherwise, the <see cref="TImpl"/> implementation is used.
+	/// If a service with the same service type is already present in the service collection, this method doesn't add another one.
+	/// </summary>
+	/// <typeparam name="TInterface">The type of the service to add.</typeparam>
+	/// <typeparam name="TImpl">The type of the implementation to use when the dry run flag is false.</typeparam>
+	/// <typeparam name="TDryRunImpl">The type of the implementation to use when the dry run flag is true.</typeparam>
+	/// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
+	public static void TryAdd<#= lifetime #>WithDryRunFlag<TInterface, TImpl, TDryRunImpl>(this IServiceCollection services) 
+		where TInterface : class
+		where TImpl : class, TInterface
+		where TDryRunImpl : class, TInterface
+	{
+		services.TryAdd<#= lifetime #><TImpl>();
+		services.TryAdd<#= lifetime #><TDryRunImpl>();
+		services.TryAdd<#= lifetime #><TInterface>(provider => provider.GetDryRunFlagsValue() ? provider.GetRequiredService<TDryRunImpl>() : provider.GetRequiredService<TImpl>());
+	}
+	<# } #>
+}

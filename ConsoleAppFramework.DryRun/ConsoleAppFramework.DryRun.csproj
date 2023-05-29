@@ -1,0 +1,59 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<RootNamespace>ConsoleAppFramework</RootNamespace>
+		<NoWarn>CS1574</NoWarn>
+
+		<!-- NuGet -->
+		<PackageId>ConsoleAppFramework.DryRun</PackageId>
+		<Description>Library designed to enhance the ConsoleAppFramework by adding a dry run feature.</Description>
+		<Authors>wipiano</Authors>
+		<Copyright>Copyright © Kohei Hakoishi 2023</Copyright>
+		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/wipiano/ConsoleAppFramework.DryRun</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/wipiano/ConsoleAppFramework.DryRun</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>ConsoleAppFramework</PackageTags>
+		<Licenses>MIT</Licenses>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="ServiceCollectionExtensions.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ServiceCollectionExtensions.tt</DependentUpon>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ConsoleAppFramework" Version="4.2.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="ServiceCollectionExtensions.tt">
+	    <Generator>TextTemplatingFileGenerator</Generator>
+	    <LastGenOutput>ServiceCollectionExtensions.cs</LastGenOutput>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="ServiceCollectionExtensions.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ServiceCollectionExtensions.tt</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="../LICENSE.txt" Pack="true" Visible="true" PackagePath=""/>
+	</ItemGroup>
+</Project>
